@@ -1,0 +1,16 @@
+# Local environment overrides
+.env
+
+# Mailpit data if ever bind-mounted locally
+data/
+*.db
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Python bytecode
+__pycache__/
+*.pyc
