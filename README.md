@@ -39,10 +39,15 @@ docker compose up -d          # or: make up
 
 # 4. confirm SMTP works before touching Mendix
 python3 scripts/send-test-email.py   # or: make test
+#    Windows: use `python` or `py` instead of `python3`
 ```
 
 A test message should appear in the inbox within a second. Stop with
 `docker compose down` (mail is kept) or `make clean` (mail is wiped).
+
+> **Windows note:** `python3` is a Microsoft Store alias, not a real command —
+> use `python scripts\send-test-email.py` (or `py scripts\...`). `make test`
+> auto-detects whichever launcher you have.
 
 ---
 
@@ -105,6 +110,7 @@ Docker:
   ```bash
   # list captured messages
   curl -s http://localhost:8025/api/v1/messages | python3 -m json.tool
+  # (Windows: python -m json.tool)
 
   # delete all captured messages (reset between test runs)
   curl -s -X DELETE http://localhost:8025/api/v1/messages

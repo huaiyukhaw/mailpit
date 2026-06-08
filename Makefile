@@ -1,6 +1,10 @@
 .DEFAULT_GOAL := help
 COMPOSE := docker compose
 
+# Pick whichever Python launcher exists: python3 (Linux/macOS), then python /
+# py (Windows, where "python3" is a Microsoft Store stub that isn't real).
+PYTHON := $(shell command -v python3 || command -v python || command -v py)
+
 .PHONY: help up down restart logs ps clean test ui
 
 help: ## Show this help
@@ -29,7 +33,7 @@ clean: ## Stop and delete ALL stored mail (removes the volume)
 	$(COMPOSE) down -v
 
 test: ## Send a test email to Mailpit
-	python3 scripts/send-test-email.py
+	$(PYTHON) scripts/send-test-email.py
 
 ui: ## Print the Mailpit UI URL
 	@echo "http://localhost:$${MP_UI_PORT:-8025}"
