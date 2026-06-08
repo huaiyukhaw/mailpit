@@ -1,0 +1,40 @@
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    restart: unless-stopped
+    ports:
+      # Web UI + REST API  -> http://localhost:8025
+      - "${MP_UI_PORT:-8025}:8025"
+      # SMTP (Mendix "Outgoing email" / SMTP server)
+      - "${MP_SMTP_PORT:-1025}:1025"
+      # POP3 (Mendix "Incoming email" retrieval, optional)
+      - "${MP_POP3_PORT:-1110}:1110"
+    environment:
+      TZ: ${TZ:-UTC}
+      # --- Storage ---------------------------------------------------------
+      # Persist messages across restarts. Remove MP_DATABASE for in-memory.
+      MP_DATABASE: /data/mailpit.db
+      MP_MAX_MESSAGES: ${MP_MAX_MESSAGES:-5000}
+      # --- SMTP auth -------------------------------------------------------
+      # Accept ANY username/password so the Mendix Email Connector can be
+      # configured with credentials (it often requires them) while you don't
+      # have to manage real accounts. Insecure auth is allowed because this is
+      # a local, non-TLS dev server only.
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      # --- POP3 retrieval --------------------------------------------------
+      # Mendix can pull delivered mail back out via POP3 to test the
+      # "receive" flow. Credentials below are what Mendix must use.
+      MP_POP3_AUTH: ${MP_POP3_AUTH:-test:test}
+    volumes:
+      - mailpit-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8025/readyz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  mailpit-data:
