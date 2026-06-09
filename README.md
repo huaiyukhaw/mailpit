@@ -53,8 +53,8 @@ A test message should appear in the inbox within a second. Stop with
 
 ## Configuring the Mendix Email Connector
 
-The Email Connector stores accounts at runtime (usually via its **Account
-administration** / `Account_Overview` page, or seeded with `AfterStartup`
+The Email Connector stores accounts at runtime (usually via its
+`EmailConnector_Overview` administration page, or seeded with `AfterStartup`
 microflow logic). Use these values.
 
 ### Outgoing mail (SMTP — sending)
