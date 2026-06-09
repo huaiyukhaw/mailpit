@@ -88,6 +88,12 @@ Only needed if you're testing the *receive* side of the connector.
 POP3 serves the messages already captured by Mailpit. Change the credentials
 via `MP_POP3_AUTH=user:pass` in your `.env`.
 
+> **Common gotcha:** the POP3 **username must be the literal `MP_POP3_AUTH`
+> user (`test`), _not_ the mailbox email address.** Unlike a real mail server,
+> Mailpit's POP3 only accepts that one exact user/password pair — entering the
+> account's email address (or any other value) returns
+> `AuthenticationFailedException: invalid password`.
+
 ### Where is Mendix running?
 
 The SMTP/POP3 **host** depends on where Studio Pro runs the app relative to
